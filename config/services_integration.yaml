@@ -15,7 +15,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\Infrastructure\:
         resource: '../src/Infrastructure/*'
-        exclude: '../src/Infrastructure/{Test}'
+        exclude: '../src/Infrastructure/{Adapter}'
 
     App\UserInterface\:
         resource: '../src/UserInterface'

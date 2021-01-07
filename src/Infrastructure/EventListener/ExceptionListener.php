@@ -1,5 +1,5 @@
 <?php
-namespace App\EventListener;
+namespace App\Infrastructure\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * Class ExceptionListener
- * @package App\EventListener
+ * @package App\Infrastructure\EventListener
  */
 class ExceptionListener
 {

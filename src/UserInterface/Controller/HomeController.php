@@ -1,16 +1,15 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\UserInterface\Controller;
 
-use http\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class HomeController
- * @package App\Controller
+ * @package App\UserInterface\Controller
  */
 class HomeController extends AbstractController
 {
