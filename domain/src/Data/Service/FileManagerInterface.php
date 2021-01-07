@@ -62,14 +62,14 @@ interface FileManagerInterface
     public function setFileHandler(SplFileObject $file) :void;
 
     /**
-     * @param array $files
-     * @return void
+     * @param SplFileObject $file
+     * @return string
      */
-    public function deleteFiles(array $files): void;
+    public function getFileContent(SplFileObject $file) :string;
 
     /**
-     * @param SplFileObject $file
+     * @param string $filePath
      * @return void
      */
-    public function deleteFile(SplFileObject $file): void;
+    public function deleteFile(string $filePath): void;
 }

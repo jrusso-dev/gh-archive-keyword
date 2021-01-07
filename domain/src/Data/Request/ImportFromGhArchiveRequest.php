@@ -130,7 +130,8 @@ class ImportFromGhArchiveRequest
 
     private function getDateAsString() : string
     {
-        return "$this->year-$this->month-$this->day";
+        $day = $this->day < 10 ? "0$this->day" : $this->day;
+        return "$this->year-$this->month-$day";
     }
 
     private function checkIfDateFormatIsValid(): bool

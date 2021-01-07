@@ -10,7 +10,6 @@ use Yousign\Domain\Data\Service\FileManagerInterface;
  * Class FileManager
  * @package Yousign\Domain\Tests\Data\Adapter\Service
  */
-
 class FileManager implements FileManagerInterface
 {
     const LOCAL_PATH = '/var/www/';
@@ -86,7 +85,7 @@ class FileManager implements FileManagerInterface
      */
     public function openFile(string $filePath): SplFileObject
     {
-        return new SplFileObject('/');
+        return new SplFileObject(__FILE__);
     }
 
     /**
@@ -98,20 +97,47 @@ class FileManager implements FileManagerInterface
     }
 
     /**
-     * @param array $files
+     * @param string $filePath
      * @return void
      */
-    public function deleteFiles(array $files): void
+    public function deleteFile(string $filePath): void
     {
-        // TODO: Implement deleteFiles() method.
+        // TODO: Implement deleteFile() method.
     }
 
     /**
      * @param SplFileObject $file
-     * @return void
+     * @return string
      */
-    public function deleteFile(SplFileObject $file): void
+    public function getFileContent(SplFileObject $file): string
     {
-        // TODO: Implement deleteFile() method.
+        $content = [
+            [
+                "id" => "12345",
+                "type" => "CreatedEvent",
+                "repo" => [
+                    "name" => "test/test",
+                    "url" => "http://github/test/test"
+                ],
+                "payload" => [
+                    "description" => "Super description"
+                ],
+                "created_at" => "2020-12-31T15:00:00Z"
+            ],
+            [
+                "id" => "12345",
+                "type" => "CreatedEvent",
+                "repo" => [
+                    "name" => "test/test",
+                    "url" => "http://github/test/test"
+                ],
+                "payload" => [
+                    "description" => "Super description"
+                ],
+                "created_at" => "2020-12-31T16:00:00Z"
+            ]
+        ];
+
+        return json_encode($content);
     }
 }
