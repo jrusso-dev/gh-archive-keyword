@@ -9,12 +9,22 @@ use SplFileObject;
  * Interface FileManager
  * @package Yousign\Domain\Data\Service
  */
-interface FileManager
+interface FileManagerInterface
 {
     /**
-     * @param string $path
+     * @param string $fileName
      */
-    public function setFilePath(string $path): void;
+    public function setFileName(string $fileName): void;
+
+    /**
+     * @return string
+     */
+    public function getRemoteFilePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getLocalFilePath(): string;
 
     /**
      * @return bool
@@ -34,5 +44,5 @@ interface FileManager
     /**
      * @return bool
      */
-    public function deleteFile(): bool;
+    public function deleteFiles(): bool;
 }

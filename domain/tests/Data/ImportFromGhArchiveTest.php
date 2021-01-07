@@ -8,6 +8,7 @@ use Yousign\Domain\Data\Presenter\ImportFromGhArchivePresenterInterface;
 use Yousign\Domain\Data\Request\ImportFromGhArchiveRequest;
 use Yousign\Domain\Data\Response\ImportFromGhArchiveResponse;
 use Yousign\Domain\Data\UseCase\ImportFromGhArchive;
+use Yousign\Domain\Tests\Data\Adapter\Service\FileManager;
 use Yousign\Domain\Tests\Data\Adapter\Service\ImporterService;
 
 /**
@@ -41,8 +42,9 @@ class ImportFromGhArchiveTest extends TestCase
         };
 
         $importerService = new ImporterService();
+        $fileManager = new FileManager();
 
-        $this->useCase = new ImportFromGhArchive($importerService);
+        $this->useCase = new ImportFromGhArchive($importerService, $fileManager);
     }
 
     public function testSuccessful(): void
