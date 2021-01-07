@@ -40,6 +40,6 @@ class ImporterService implements GitHubArchiveImporterServiceInterface
     public function getRemoteFileName(): string
     {
         $dateString = $this->date->format('Y-m-d');
-        return "$dateString-$this->hour.json.gz";
+        return "$dateString-$this->hour";
     }
 }

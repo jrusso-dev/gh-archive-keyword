@@ -13,74 +13,105 @@ use Yousign\Domain\Data\Service\FileManagerInterface;
 
 class FileManager implements FileManagerInterface
 {
-    const REMOTE_URL = 'https://remoteurl/';
-    const LOCAL_FOLDER = '/tmp/';
+    const LOCAL_PATH = '/var/www/';
+    const REMOTE_PATH = 'http://remote';
     /**
      * @var string
      */
     private string $fileName;
 
     /**
+     * @return string
+     */
+    public function getLocalPath(): string
+    {
+        return self::LOCAL_PATH.$this->fileName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemotePath(): string
+    {
+        return self::REMOTE_PATH.$this->fileName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDownloadExtension(): string
+    {
+        return '.json.gz';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFinalExtension(): string
+    {
+        return '.json';
+    }
+
+    /**
      * @param string $fileName
      */
-    public function setFileName(string $fileName): void
+    public function setBaseFileName(string $fileName): void
     {
         $this->fileName = $fileName;
     }
 
     /**
-     * @return string
+     * @param string $remotePath
+     * @param string $destinationPath
+     * @return void
      */
-    public function getRemoteFilePath(): string
+    public function downloadFile(string $remotePath, string $destinationPath): void
     {
-        return self::REMOTE_URL.$this->fileName;
+        // TODO: Implement downloadFile() method.
     }
 
     /**
-     * @return string
+     * @param string $filePath
+     * @param string $destinationPath
+     * @return void
      */
-    public function getLocalFilePath(): string
+    public function extractFile(string $filePath, string $destinationPath): void
     {
-        return self::LOCAL_FOLDER.$this->fileName;
+        // TODO: Implement extractFile() method.
     }
 
     /**
-     * @return bool
-     */
-    public function downloadFile(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function extractFile(): bool
-    {
-        return true;
-    }
-
-    /**
+     * @param string $filePath
      * @return SplFileObject
      */
-    public function openFile(): SplFileObject
+    public function openFile(string $filePath): SplFileObject
     {
-        return new SplFileObject($this->getLocalFilePath());
+        return new SplFileObject('/');
     }
 
     /**
-     * @return bool
+     * @param SplFileObject $file
      */
-    public function deleteFiles(): bool
+    public function setFileHandler(SplFileObject $file): void
     {
-        return true;
+        // TODO: Implement setFileHandler() method.
     }
 
     /**
-     * @return string
+     * @param array $files
+     * @return void
      */
-    public function getFileName(): string
+    public function deleteFiles(array $files): void
     {
-        return $this->fileName;
+        // TODO: Implement deleteFiles() method.
+    }
+
+    /**
+     * @param SplFileObject $file
+     * @return void
+     */
+    public function deleteFile(SplFileObject $file): void
+    {
+        // TODO: Implement deleteFile() method.
     }
 }

@@ -51,11 +51,16 @@ class ImportFromGhArchive
         for($hour = 0;$hour <= 23;$hour++) {
             $fileToManage++;
             $this->importer->setHourToImport($hour);
-            $fileName = $this->importer->getRemoteFileName();
-            $this->fileManager->setFileName($fileName);
-            $this->fileManager->downloadFile();
-            $this->fileManager->extractFile();
-            $this->fileManager->deleteFiles();
+            $fileNameWithoutExtension = $this->importer->getRemoteFileName();
+            $this->fileManager->setBaseFileName($fileNameWithoutExtension);
+            $remotePath = $this->fileManager->getRemotePath();
+            $localPath = $this->fileManager->getLocalPath();
+            $remoteExtension = $this->fileManager->getDownloadExtension();
+            $localExtension = $this->fileManager->getFinalExtension();
+            $this->fileManager->downloadFile($remotePath.$remoteExtension, $localPath.$remoteExtension);
+            $this->fileManager->extractFile($localPath.$remoteExtension, $localPath.$localExtension);
+
+
             $fileManaged++;
         }
         $presenter->present(new ImportFromGhArchiveResponse($date, $fileToManage, $fileManaged));

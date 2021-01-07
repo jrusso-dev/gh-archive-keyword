@@ -12,37 +12,64 @@ use SplFileObject;
 interface FileManagerInterface
 {
     /**
+     * @return string
+     */
+    public function getLocalPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getRemotePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getDownloadExtension(): string;
+
+    /**
+     * @return string
+     */
+    public function getFinalExtension(): string;
+
+    /**
      * @param string $fileName
      */
-    public function setFileName(string $fileName): void;
+    public function setBaseFileName(string $fileName): void;
 
     /**
-     * @return string
+     * @param string $remotePath
+     * @param string $destinationPath
+     * @return void
      */
-    public function getRemoteFilePath(): string;
+    public function downloadFile(string $remotePath, string $destinationPath): void;
 
     /**
-     * @return string
+     * @param string $filePath
+     * @param string $destinationPath
+     * @return void
      */
-    public function getLocalFilePath(): string;
+    public function extractFile(string $filePath, string $destinationPath): void;
 
     /**
-     * @return bool
-     */
-    public function downloadFile(): bool;
-
-    /**
-     * @return bool
-     */
-    public function extractFile(): bool;
-
-    /**
+     * @param string $filePath
      * @return SplFileObject
      */
-    public function openFile(): SplFileObject;
+    public function openFile(string $filePath): SplFileObject;
 
     /**
-     * @return bool
+     * @param SplFileObject $file
      */
-    public function deleteFiles(): bool;
+    public function setFileHandler(SplFileObject $file) :void;
+
+    /**
+     * @param array $files
+     * @return void
+     */
+    public function deleteFiles(array $files): void;
+
+    /**
+     * @param SplFileObject $file
+     * @return void
+     */
+    public function deleteFile(SplFileObject $file): void;
 }
