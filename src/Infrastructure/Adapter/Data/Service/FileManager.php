@@ -1,19 +1,20 @@
 <?php
 
 
-namespace Yousign\Domain\Tests\Data\Adapter\Service;
+namespace App\Infrastructure\Adapter\Data\Service;
 
 use SplFileObject;
 use Yousign\Domain\Data\Service\FileManagerInterface;
+use function json_encode;
 
 /**
  * Class FileManager
- * @package Yousign\Domain\Tests\Data\Adapter\Service
+ * @package App\Infrastructure\Adapter\Data\Service
  */
 class FileManager implements FileManagerInterface
 {
-    const LOCAL_PATH = '/var/www/';
-    const REMOTE_PATH = 'http://remote';
+    const LOCAL_PATH = '/tmp/';
+    const REMOTE_PATH = 'https://data.gharchive.org/';
     /**
      * @var string
      */
@@ -74,7 +75,7 @@ class FileManager implements FileManagerInterface
      */
     public function downloadFile(string $remotePath, string $destinationPath): void
     {
-        // TODO: Implement downloadFile() method.
+        exec("wget $remotePath -P $destinationPath");
     }
 
     /**
@@ -83,7 +84,7 @@ class FileManager implements FileManagerInterface
      */
     public function extractFile(string $filePath): void
     {
-        // TODO: Implement extractFile() method.
+        exec("gzip -d $filePath");
     }
 
     /**
@@ -92,7 +93,7 @@ class FileManager implements FileManagerInterface
      */
     public function openFile(string $filePath): SplFileObject
     {
-        return new SplFileObject(__FILE__);
+        return new SplFileObject($filePath);
     }
 
     /**
@@ -101,15 +102,6 @@ class FileManager implements FileManagerInterface
     public function setFileHandler(SplFileObject $file): void
     {
         // TODO: Implement setFileHandler() method.
-    }
-
-    /**
-     * @param string $filePath
-     * @return void
-     */
-    public function deleteFile(string $filePath): void
-    {
-        // TODO: Implement deleteFile() method.
     }
 
     /**
@@ -148,5 +140,12 @@ class FileManager implements FileManagerInterface
         return json_encode($content);
     }
 
-
+    /**
+     * @param string $filePath
+     * @return void
+     */
+    public function deleteFile(string $filePath): void
+    {
+        // TODO: Implement deleteFile() method.
+    }
 }

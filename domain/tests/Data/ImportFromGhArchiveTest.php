@@ -61,8 +61,8 @@ class ImportFromGhArchiveTest extends TestCase
         $this->assertEquals(31, $request->getDay());
         $this->useCase->execute($request, $this->presenter);
         $this->assertInstanceOf(\DateTimeInterface::class, $this->presenter->response->getDate());
-        $this->assertEquals(24, $this->presenter->response->getNbRowsToImport());
-        $this->assertEquals(24, $this->presenter->response->getNbRowsImported());
+        $this->assertEquals(48, $this->presenter->response->getNbRowsToImport());
+        $this->assertEquals(48, $this->presenter->response->getNbRowsImported());
     }
 
     public function testSuccessfulWithoutReplace(): void

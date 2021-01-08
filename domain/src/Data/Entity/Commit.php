@@ -12,6 +12,17 @@ use stdClass;
 class Commit
 {
 
+    const CREATE_EVT = 'CreateEvent';
+    const COMMIT_COMMENT_EVT = 'CommitCommentEvent';
+    const ISSUE_COMMENT_EVT = 'IssueCommentEvent';
+    const PULL_REQUEST_EVT = 'PullRequestEvent';
+    const PUSH_EVT = 'PushEvent';
+    const RELEASE_EVT = 'ReleaseEvent';
+
+    const EVENTS_TO_MANAGE = [
+        ''
+    ];
+
     /**
      * @var string
      */

@@ -68,27 +68,31 @@ class ImportFromGhArchive
             $this->commitGateway->removeCommitsFromDate($date);
         }
 
-        $fileToManage = $fileManaged = 0;
-        for ($hour = 0; $hour <= 23; $hour++) {
-            $fileToManage++;
+        $rowsToManage = $rowManaged = 0;
+        for ($hour = 0; $hour <= 1; $hour++) {
             $this->importer->setHourToImport($hour);
             $fileNameWithoutExtension = $this->importer->getRemoteFileName();
             $this->fileManager->setBaseFileName($fileNameWithoutExtension);
             $remotePath = $this->fileManager->getRemotePath();
             $localPath = $this->fileManager->getLocalPath();
+            $localFolder = $this->fileManager->getDestinationFolder();
             $remoteExtension = $this->fileManager->getDownloadExtension();
             $localExtension = $this->fileManager->getFinalExtension();
-            $this->fileManager->downloadFile($remotePath.$remoteExtension, $localPath.$remoteExtension);
-            $this->fileManager->extractFile($localPath.$remoteExtension, $localPath.$localExtension);
+            $this->fileManager->downloadFile($remotePath.$remoteExtension, $localFolder);
+            $this->fileManager->extractFile($localPath.$remoteExtension);
             $file = $this->fileManager->openFile($localPath.$localExtension);
-            $jsonContent = $this->fileManager->getFileContent($file);
-            $jsonLines = json_decode($jsonContent);
-            foreach ($jsonLines as $commitDecoded) {
-                $commit = Commit::fromObject($commitDecoded);
-                $this->commitGateway->create($commit);
+            while (!$file->eof()) {
+                $commitDecoded = json_decode($file->fgets());
+                if(isset($commitDecoded->type)) {
+                    $rowsToManage++;
+                    $commit = Commit::fromObject($commitDecoded);
+                    $this->commitGateway->create($commit);
+                    $rowManaged++;
+                }
             }
-            $fileManaged++;
+            $file = null;
+            $this->fileManager->deleteFile($localPath.$localExtension);
         }
-        $presenter->present(new ImportFromGhArchiveResponse($date, $fileToManage, $fileManaged));
+        $presenter->present(new ImportFromGhArchiveResponse($date, $rowsToManage, $rowManaged));
     }
 }

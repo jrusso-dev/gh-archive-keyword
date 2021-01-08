@@ -1,15 +1,18 @@
 <?php
 
-namespace Yousign\Domain\Tests\Data\Adapter\Service;
+
+namespace App\Infrastructure\Adapter\Data\Service;
+
 
 use Yousign\Domain\Data\Service\GitHubArchiveImporterServiceInterface;
 
 /**
  * Class ImporterService
- * @package Yousign\Domain\Tests\Data\Adapter\Service
+ * @package App\Infrastructure\Adapter\Data\Service
  */
 class ImporterService implements GitHubArchiveImporterServiceInterface
 {
+
     /**
      * @var \DateTimeInterface
      */

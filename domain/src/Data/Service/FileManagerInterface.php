@@ -14,6 +14,11 @@ interface FileManagerInterface
     /**
      * @return string
      */
+    public function getDestinationFolder(): string;
+
+    /**
+     * @return string
+     */
     public function getLocalPath(): string;
 
     /**
@@ -45,10 +50,9 @@ interface FileManagerInterface
 
     /**
      * @param string $filePath
-     * @param string $destinationPath
      * @return void
      */
-    public function extractFile(string $filePath, string $destinationPath): void;
+    public function extractFile(string $filePath): void;
 
     /**
      * @param string $filePath
