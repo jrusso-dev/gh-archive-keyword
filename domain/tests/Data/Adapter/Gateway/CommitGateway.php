@@ -41,4 +41,12 @@ class CommitGateway implements CommitGatewayInterface
     {
         // TODO: Implement removeCommitsFromDate() method.
     }
+
+    /**
+     * @param array $commits
+     */
+    public function createFromArray(array $commits): void
+    {
+        // TODO: Implement createFromArray() method.
+    }
 }

@@ -24,6 +24,8 @@ class Commit
         self::PUSH_EVT
     ];
 
+    const MAX_COMMITS_BY_BATCH = 10000;
+
     /**
      * @var string
      */

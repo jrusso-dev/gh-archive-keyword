@@ -70,7 +70,8 @@ class ImportFromGhArchive
         }
 
         $rowsToManage = $rowManaged = 0;
-        for ($hour = 0; $hour <= 23; $hour++) {
+        $maxCommitByBatch = Commit::MAX_COMMITS_BY_BATCH;
+        for ($hour = 0; $hour < 23; $hour++) {
             $this->importer->setHourToImport($hour);
             $fileNameWithoutExtension = $this->importer->getRemoteFileName();
             $this->fileManager->setBaseFileName($fileNameWithoutExtension);
@@ -82,6 +83,7 @@ class ImportFromGhArchive
             $this->fileManager->downloadFile($remotePath.$remoteExtension, $localFolder);
             $this->fileManager->extractFile($localPath.$remoteExtension);
             $file = $this->fileManager->openFile($localPath.$localExtension);
+            $commitsBatch = [];
             while (!$file->eof()) {
                 $commitDecoded = json_decode($file->fgets());
                 if(isset($commitDecoded->type) && in_array($commitDecoded->type,Commit::EVENTS_TO_MANAGE)) {
@@ -91,10 +93,17 @@ class ImportFromGhArchive
                     foreach($eventsParsed as $eventParsed) {
                         $rowsToManage++;
                         $commit = Commit::fromObject($eventParsed);
-                        $this->commitGateway->create($commit);
+                        $commitsBatch[] = $commit;
+                        if(count($commitsBatch) === $maxCommitByBatch) {
+                            $this->commitGateway->createFromArray($commitsBatch);
+                            $commitsBatch = [];
+                        }
                         $rowManaged++;
                     }
                 }
+            }
+            if(count($commitsBatch) > 0) {
+                $this->commitGateway->createFromArray($commitsBatch);
             }
             $file = null;
             $this->fileManager->deleteFile($localPath.$localExtension);

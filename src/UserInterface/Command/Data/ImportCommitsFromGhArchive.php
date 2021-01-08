@@ -51,6 +51,7 @@ class ImportCommitsFromGhArchive extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $start = time();
         $year = (int) $input->getArgument('year');
         $month = (int) $input->getArgument('month');
         $day = (int) $input->getArgument('day');
@@ -58,7 +59,10 @@ class ImportCommitsFromGhArchive extends Command
         $presenter = new ImportFromGhArchivePresenterCli();
         $this->useCase->execute($request, $presenter);
         $response = $presenter->getResponse();
-        $output->writeln("<info>$response</info>");
+        $finish = time();
+        $elapsed = $finish - $start;
+        $output->writeln("<info>$response ($elapsed s)</info>");
+        $output->writeln("<info></info>");
         return 0;
     }
 }

@@ -90,4 +90,27 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
     {
         // TODO: Implement removeCommitsFromDate() method.
     }
+
+    /**
+     * @param array $commits
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\Persistence\Mapping\MappingException
+     */
+    public function createFromArray(array $commits): void
+    {
+        foreach($commits as $commit) {
+            $doctrineCommit = new Commit();
+            $doctrineCommit->setMessage($commit->getMessage())
+                ->setCreatedAt($commit->getCreatedAt())
+                ->setCommitId($commit->getCommitId())
+                ->setCommitType($commit->getCommitType())
+                ->setRepositoryName($commit->getRepositoryName())
+                ->setRepositoryUrl($commit->getRepositoryUrl());
+
+            $this->_em->persist($doctrineCommit);
+        }
+        $this->_em->flush();
+        $this->_em->clear();
+    }
 }
