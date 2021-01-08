@@ -61,7 +61,13 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
      */
     public function getCommitsForDate(\DateTimeInterface $date): array
     {
-        return [];
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.createdAt = :date')
+            ->setParameter('date', $date)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

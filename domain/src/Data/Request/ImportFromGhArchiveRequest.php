@@ -56,7 +56,6 @@ class ImportFromGhArchiveRequest
         }
         $dateAsString = $this->getDateAsString();
         $this->setDate(\DateTime::createFromFormat(self::DATE_FORMAT, $dateAsString));
-
     }
 
     public static function create(
@@ -136,9 +135,9 @@ class ImportFromGhArchiveRequest
 
     private function checkIfDateFormatIsValid(): bool
     {
-        $dateString = $this->getDateAsString();
+        $dateAsString = $this->getDateAsString();
         $dateObject = $this->getDate();
-        return $dateObject && $dateObject->format('Y-m-d') === $dateString;
+        return $dateObject && $dateObject->format('Y-m-d') === $dateAsString;
     }
 
     private function checkIfDateIsPast(): bool
