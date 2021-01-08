@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Repository;
+namespace App\Infrastructure\Adapter\Repository;
 
 use App\Infrastructure\Entity\Commit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -66,10 +66,21 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
 
     /**
      * @param DomainCommit $commit
+     * @throws \Doctrine\ORM\ORMException
      */
     public function create(DomainCommit $commit): void
     {
-        // TODO: Implement create() method.
+        $doctrineCommit = new Commit();
+        $doctrineCommit->setMessage($commit->getMessage())
+            ->setCreatedAt($commit->getCreatedAt())
+            ->setCommitId($commit->getCommitId())
+            ->setCommitType($commit->getCommitType())
+            ->setRepositoryName($commit->getRepositoryName())
+            ->setRepositoryUrl($commit->getRepositoryUrl());
+
+        $this->_em->persist($doctrineCommit);
+        $this->_em->flush();
+
     }
 
     /**

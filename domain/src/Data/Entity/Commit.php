@@ -100,4 +100,53 @@ class Commit
 
     }
 
+    /**
+     * @return string
+     */
+    public function getCommitId(): string
+    {
+        return $this->commitId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommitType(): string
+    {
+        return $this->commitType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRepositoryName(): string
+    {
+        return $this->repositoryName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRepositoryUrl(): string
+    {
+        return $this->repositoryUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+
 }
