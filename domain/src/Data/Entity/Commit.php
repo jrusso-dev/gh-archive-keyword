@@ -20,7 +20,12 @@ class Commit
     const RELEASE_EVT = 'ReleaseEvent';
 
     const EVENTS_TO_MANAGE = [
-        ''
+        self::CREATE_EVT,
+        self::COMMIT_COMMENT_EVT,
+        self::ISSUE_COMMENT_EVT,
+        self::PULL_REQUEST_EVT,
+        self::PUSH_EVT,
+        self::RELEASE_EVT
     ];
 
     /**
@@ -36,7 +41,7 @@ class Commit
     /**
      * @var string
      */
-    private string $repository;
+    private string $repositoryName;
 
     /**
      * @var string
@@ -46,7 +51,7 @@ class Commit
     /**
      * @var string
      */
-    private string $description;
+    private string $message;
 
     /**
      * @var \DateTimeInterface
@@ -57,43 +62,43 @@ class Commit
      * Commit constructor.
      * @param string $commitId
      * @param string $commitType
-     * @param string $repository
+     * @param string $repositoryName
      * @param string $repositoryUrl
-     * @param string $description
+     * @param string $message
      * @param \DateTimeInterface $createdAt
      */
     public function __construct(
         string $commitId,
         string $commitType,
-        string $repository,
+        string $repositoryName,
         string $repositoryUrl,
-        string $description,
+        string $message,
         \DateTimeInterface $createdAt
     ) {
         $this->commitId = $commitId;
         $this->commitType = $commitType;
-        $this->repository = $repository;
+        $this->repositoryName = $repositoryName;
         $this->repositoryUrl = $repositoryUrl;
-        $this->description = $description;
+        $this->message = $message;
         $this->createdAt = $createdAt;
     }
 
 
-    public static function fromObject(stdClass $object): self
+    public static function fromObject(stdClass $formattedEvent): self
     {
-        $commitId = $object->id;
-        $type = $object->type;
-        $repository = $object->repo->name;
-        $repositoryUrl = $object->repo->url;
-        $description = $object->payload->description;
-        $createdAt = new \DateTime($object->created_at);
+        $commitId = $formattedEvent->eventId;
+        $type = $formattedEvent->eventType;
+        $repositoryName = $formattedEvent->repoName;
+        $repositoryUrl = $formattedEvent->repoUrl;
+        $message = $formattedEvent->message;
+        $createdAt = $formattedEvent->createdAt;
 
         return new self(
             $commitId,
             $type,
-            $repository,
+            $repositoryName,
             $repositoryUrl,
-            $description,
+            $message,
             $createdAt
         );
 

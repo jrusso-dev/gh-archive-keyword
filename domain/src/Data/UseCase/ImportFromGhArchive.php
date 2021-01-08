@@ -8,6 +8,7 @@ use Yousign\Domain\Data\Gateway\CommitGatewayInterface;
 use Yousign\Domain\Data\Presenter\ImportFromGhArchivePresenterInterface;
 use Yousign\Domain\Data\Request\ImportFromGhArchiveRequest;
 use Yousign\Domain\Data\Response\ImportFromGhArchiveResponse;
+use Yousign\Domain\Data\Service\EventParser\EventParserFactory;
 use Yousign\Domain\Data\Service\FileManagerInterface;
 use Yousign\Domain\Data\Service\GitHubArchiveImporterServiceInterface;
 
@@ -69,7 +70,7 @@ class ImportFromGhArchive
         }
 
         $rowsToManage = $rowManaged = 0;
-        for ($hour = 0; $hour <= 1; $hour++) {
+        for ($hour = 0; $hour <= 23; $hour++) {
             $this->importer->setHourToImport($hour);
             $fileNameWithoutExtension = $this->importer->getRemoteFileName();
             $this->fileManager->setBaseFileName($fileNameWithoutExtension);
@@ -83,11 +84,16 @@ class ImportFromGhArchive
             $file = $this->fileManager->openFile($localPath.$localExtension);
             while (!$file->eof()) {
                 $commitDecoded = json_decode($file->fgets());
-                if(isset($commitDecoded->type)) {
-                    $rowsToManage++;
-                    $commit = Commit::fromObject($commitDecoded);
-                    $this->commitGateway->create($commit);
-                    $rowManaged++;
+                if(isset($commitDecoded->type) && in_array($commitDecoded->type,Commit::EVENTS_TO_MANAGE)) {
+                    /** @var EventParserFactory $eventParser */
+                    $eventParser = EventParserFactory::fromEvent($commitDecoded);
+                    $eventsParsed = $eventParser->getFormattedEvents();
+                    foreach($eventsParsed as $eventParsed) {
+                        $rowsToManage++;
+                        $commit = Commit::fromObject($eventParsed);
+                        $this->commitGateway->create($commit);
+                        $rowManaged++;
+                    }
                 }
             }
             $file = null;

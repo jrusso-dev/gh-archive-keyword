@@ -92,7 +92,7 @@ class FileManager implements FileManagerInterface
      */
     public function openFile(string $filePath): SplFileObject
     {
-        return new SplFileObject(__FILE__);
+        return new SplFileObject(__DIR__.'/../../Fixtures/eventsFixture.json');
     }
 
     /**
