@@ -15,17 +15,13 @@ class Commit
     const CREATE_EVT = 'CreateEvent';
     const COMMIT_COMMENT_EVT = 'CommitCommentEvent';
     const ISSUE_COMMENT_EVT = 'IssueCommentEvent';
-    const PULL_REQUEST_EVT = 'PullRequestEvent';
     const PUSH_EVT = 'PushEvent';
-    const RELEASE_EVT = 'ReleaseEvent';
 
     const EVENTS_TO_MANAGE = [
         self::CREATE_EVT,
         self::COMMIT_COMMENT_EVT,
         self::ISSUE_COMMENT_EVT,
-        self::PULL_REQUEST_EVT,
-        self::PUSH_EVT,
-        self::RELEASE_EVT
+        self::PUSH_EVT
     ];
 
     /**

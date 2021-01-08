@@ -17,7 +17,7 @@ class PushEventParser extends EventParserFactory
         $event = $this->event;
         foreach($event->payload->commits as $commit) {
             $this->initFormattedEvent();
-            $this->setMessage($commit->message);
+            $this->setMessage((string)$commit->message);
             $this->addFormattedEvent();
         }
     }

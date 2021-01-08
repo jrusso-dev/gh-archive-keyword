@@ -30,7 +30,7 @@ class ImportFromGhArchivePresenterCli implements ImportFromGhArchivePresenterInt
         $response = $this->response;
         $date = $response->getDate()->format('Y-m-d');
         $nbRowsImported = $response->getNbRowsImported();
-        return "$nbRowsImported row imported for date $date";
+        return "$nbRowsImported rows imported for date $date";
     }
 
 

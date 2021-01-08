@@ -110,34 +110,7 @@ class FileManager implements FileManagerInterface
      */
     public function getFileContent(SplFileObject $file): string
     {
-        $content = [
-            [
-                "id" => "12345",
-                "type" => "CreatedEvent",
-                "repo" => [
-                    "name" => "test/test",
-                    "url" => "http://github/test/test"
-                ],
-                "payload" => [
-                    "description" => "Super description"
-                ],
-                "created_at" => "2020-12-31T15:00:00Z"
-            ],
-            [
-                "id" => "12345",
-                "type" => "CreatedEvent",
-                "repo" => [
-                    "name" => "test/test",
-                    "url" => "http://github/test/test"
-                ],
-                "payload" => [
-                    "description" => "Super description"
-                ],
-                "created_at" => "2020-12-31T16:00:00Z"
-            ]
-        ];
-
-        return json_encode($content);
+        return "";
     }
 
     /**
@@ -146,6 +119,6 @@ class FileManager implements FileManagerInterface
      */
     public function deleteFile(string $filePath): void
     {
-        // TODO: Implement deleteFile() method.
+        unlink($filePath);
     }
 }
