@@ -139,8 +139,10 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
         $numberOfCommits = min($numberOfCommits, 100);
         $commits = $this->createQueryBuilder('c')
             ->andWhere('c.createdAt BETWEEN :from AND :to')
+            ->andWhere('c.commitType = :type')
             ->setParameter('from', $from )
             ->setParameter('to', $to)
+            ->setParameter('type', DomainCommit::PUSH_EVT)
             ->orderBy('c.id', 'DESC')
             ->setMaxResults($numberOfCommits);
 

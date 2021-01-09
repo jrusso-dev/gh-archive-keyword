@@ -53,13 +53,6 @@ class EventController extends ApiController
         }
 
         $response = $presenter->getResponse();
-        //@TODO : Create ViewModel Class (DTO) to return correct template response
-        $responseObj = new stdClass();
-        $responseObj->date = $response->getDate()->format('Y-m-d');
-        $responseObj->keyword = $response->getKeyword();
-        $responseObj->total = $response->getTotal();
-        $responseObj->dataByEventType = $response->getDataByEventType();
-        $responseObj->lastCommits = $response->getLastCommits();
-        return $this->returnSuccess($responseObj);
+        return $this->returnSuccess($response);
     }
 }

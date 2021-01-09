@@ -4,6 +4,7 @@
 namespace App\UserInterface\Presenter\Data;
 
 
+use App\UserInterface\ViewModel\GetDataForDateViewModel;
 use Yousign\Domain\Data\Presenter\GetDataForDatePresenterInterface;
 use Yousign\Domain\Data\Response\GetDataForDateResponse;
 
@@ -15,22 +16,22 @@ class GetDataForDatePresenter implements GetDataForDatePresenterInterface
 {
 
     /**
-     * @var GetDataForDateResponse
+     * @var GetDataForDateViewModel
      */
-    private GetDataForDateResponse $response;
+    private GetDataForDateViewModel $response;
 
     /**
      * @param GetDataForDateResponse $response
      */
     public function present(GetDataForDateResponse $response): void
     {
-        $this->response = $response;
+        $this->response = GetDataForDateViewModel::fromResponse($response);
     }
 
     /**
-     * @return GetDataForDateResponse
+     * @return GetDataForDateViewModel
      */
-    public function getResponse(): GetDataForDateResponse
+    public function getResponse(): GetDataForDateViewModel
     {
         return $this->response;
     }
