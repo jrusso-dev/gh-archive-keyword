@@ -39,9 +39,9 @@ class ApiController extends AbstractController
      */
     protected function returnSuccess($content, string $message = '')
     {
-        $errorNo = Response::HTTP_OK;
-        $error = ['code' => $errorNo, 'message' => $message, 'content' => $content];
-        return $this->json($error,$errorNo);
+        $code = Response::HTTP_OK;
+        $response = ['code' => $code, 'message' => $message, 'content' => $content];
+        return $this->json($response,$code);
     }
 
 }
