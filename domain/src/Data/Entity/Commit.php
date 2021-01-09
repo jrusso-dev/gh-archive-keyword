@@ -11,7 +11,6 @@ use stdClass;
  */
 class Commit
 {
-
     const CREATE_EVT = 'CreateEvent';
     const COMMIT_COMMENT_EVT = 'CommitCommentEvent';
     const ISSUE_COMMENT_EVT = 'IssueCommentEvent';
@@ -24,7 +23,7 @@ class Commit
         self::PUSH_EVT
     ];
 
-    const MAX_COMMITS_BY_BATCH = 10000;
+    const MAX_COMMITS_BY_BATCH = 20000;
 
     /**
      * @var string

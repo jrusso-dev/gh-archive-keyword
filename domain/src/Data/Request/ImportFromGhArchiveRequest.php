@@ -12,9 +12,6 @@ use Assert\Assertion;
 class ImportFromGhArchiveRequest
 {
     const MIN_YEAR = 2012;
-    const MAX_MONTH = 12;
-    const MAX_DAY = 31;
-
     const DATE_FORMAT = 'Y-m-d';
 
     /**
@@ -55,7 +52,7 @@ class ImportFromGhArchiveRequest
             $this->replaceData = $replaceData;
         }
         $dateAsString = $this->getDateAsString();
-        $this->setDate(\DateTime::createFromFormat(self::DATE_FORMAT, $dateAsString));
+        $this->setDate(new \DateTime($dateAsString));
     }
 
     public static function create(
@@ -117,12 +114,7 @@ class ImportFromGhArchiveRequest
 
     public function validate()
     {
-        Assertion::notBlank($this->year);
-        Assertion::notBlank($this->month);
-        Assertion::notBlank($this->day);
         Assertion::greaterOrEqualThan($this->year, self::MIN_YEAR);
-        Assertion::lessOrEqualThan($this->month, self::MAX_MONTH);
-        Assertion::lessOrEqualThan($this->day, self::MAX_DAY);
         Assertion::true($this->checkIfDateFormatIsValid());
         Assertion::true($this->checkIfDateIsPast());
     }

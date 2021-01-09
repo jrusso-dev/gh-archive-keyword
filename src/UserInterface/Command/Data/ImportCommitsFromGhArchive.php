@@ -38,9 +38,10 @@ class ImportCommitsFromGhArchive extends Command
     {
         $this
             ->setDescription('Imports commits from GH Archive Website')
-            ->addArgument('year', InputArgument::REQUIRED, 'Year ?')
-            ->addArgument('month', InputArgument::REQUIRED, 'Month ?')
-            ->addArgument('day', InputArgument::REQUIRED, 'Day ?');
+            ->addArgument('year', InputArgument::REQUIRED, 'Year of import')
+            ->addArgument('month', InputArgument::REQUIRED, 'Month of import')
+            ->addArgument('day', InputArgument::REQUIRED, 'Day of import')
+            ->addArgument('replace', InputArgument::OPTIONAL, 'Replace data ?');
 
     }
 
@@ -55,7 +56,8 @@ class ImportCommitsFromGhArchive extends Command
         $year = (int) $input->getArgument('year');
         $month = (int) $input->getArgument('month');
         $day = (int) $input->getArgument('day');
-        $request = ImportFromGhArchiveRequest::create($year, $month, $day);
+        $replaceData = $input->getArgument('replace') === 'yes';
+        $request = ImportFromGhArchiveRequest::create($year, $month, $day, $replaceData);
         $presenter = new ImportFromGhArchivePresenterCli();
         $this->useCase->execute($request, $presenter);
         $response = $presenter->getResponse();

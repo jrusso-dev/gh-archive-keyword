@@ -94,7 +94,12 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
      */
     public function removeCommitsFromDate(\DateTimeInterface $date): void
     {
-        // TODO: Implement removeCommitsFromDate() method.
+        $this->createQueryBuilder('c')
+            ->delete()
+            ->andWhere('c.createdAt = :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->execute();
     }
 
     /**
@@ -118,5 +123,22 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
         }
         $this->_em->flush();
         $this->_em->clear();
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     * @param int $numberOfCommits
+     * @return array
+     */
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits): array
+    {
+        $numberOfCommits = min($numberOfCommits, 100);
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.createdAt = :date')
+            ->setParameter('date', $date)
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults($numberOfCommits)
+            ->getQuery()
+            ->getResult();
     }
 }

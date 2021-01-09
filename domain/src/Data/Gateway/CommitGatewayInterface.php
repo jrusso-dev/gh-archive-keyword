@@ -18,6 +18,13 @@ interface CommitGatewayInterface
     public function getCommitsForDate(\DateTimeInterface $date): array;
 
     /**
+     * @param \DateTimeInterface $date
+     * @param int $numberOfCommits
+     * @return array
+     */
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits): array;
+
+    /**
      * @param Commit $commit
      */
     public function create(Commit $commit): void;

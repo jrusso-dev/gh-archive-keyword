@@ -58,7 +58,7 @@ class ImportFromGhArchive
         $date = $request->getDate();
         $replaceData = $request->getReplaceData();
         $this->importer->setDateToImport($date);
-        $commitsFromDate = $this->commitGateway->getCommitsForDate($date);
+        $commitsFromDate = $this->commitGateway->getLastCommitsForDate($date, 1);
         if (count($commitsFromDate) > 0) {
             if (!$replaceData) {
                 $presenter->present(
@@ -71,7 +71,7 @@ class ImportFromGhArchive
 
         $rowsToManage = $rowManaged = 0;
         $maxCommitByBatch = Commit::MAX_COMMITS_BY_BATCH;
-        for ($hour = 0; $hour < 23; $hour++) {
+        for ($hour = 0; $hour <= 23; $hour++) {
             $this->importer->setHourToImport($hour);
             $fileNameWithoutExtension = $this->importer->getRemoteFileName();
             $this->fileManager->setBaseFileName($fileNameWithoutExtension);

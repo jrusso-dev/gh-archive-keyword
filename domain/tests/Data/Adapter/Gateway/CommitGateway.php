@@ -49,4 +49,17 @@ class CommitGateway implements CommitGatewayInterface
     {
         // TODO: Implement createFromArray() method.
     }
+
+    /**
+     * @param \DateTimeInterface $date
+     * @param int $numberOfCommits
+     * @return array
+     */
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits): array
+    {
+        if ($date->format('Y-m-d') === '2020-12-01') {
+            return [1,3];
+        }
+        return [];
+    }
 }
