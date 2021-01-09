@@ -4,6 +4,7 @@
 namespace Yousign\Domain\Tests\Data\Adapter\Gateway;
 
 
+use DateTime;
 use Yousign\Domain\Data\Entity\Commit;
 use Yousign\Domain\Data\Gateway\CommitGatewayInterface;
 
@@ -21,8 +22,9 @@ class CommitGateway implements CommitGatewayInterface
     public function getCommitsForDate(\DateTimeInterface $date): array
     {
         if ($date->format('Y-m-d') === '2020-12-01') {
-            return [1,3];
+            return [1, 3];
         }
+
         return [];
     }
 
@@ -53,13 +55,36 @@ class CommitGateway implements CommitGatewayInterface
     /**
      * @param \DateTimeInterface $date
      * @param int $numberOfCommits
-     * @return array
+     * @param string $keyword
+     * @return Commit[]
+     * @throws \Exception
      */
-    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits): array
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits, string $keyword = 'love'): array
     {
-        if ($date->format('Y-m-d') === '2020-12-01') {
-            return [1,3];
+        if ($date->format('Y-m-d') === '2020-12-01' && $keyword === 'love') {
+            return [
+                new Commit(
+                    "12345",
+                    "PushEvent",
+                    "myrepo/myrepo",
+                    "repoURL",
+                    "Lots of fun and lots of love",
+                    new DateTime("2020-12-01 23:59:59")
+                ),
+            ];
         }
+
         return [];
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     * @param string $keyword
+     * @return Commit[]
+     * @throws \Exception
+     */
+    public function getCommitsForDateAndKeyword(\DateTimeInterface $date, string $keyword): array
+    {
+        return $this->getLastCommitsForDate($date,1, $keyword);
     }
 }

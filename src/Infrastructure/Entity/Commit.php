@@ -54,7 +54,7 @@ class Commit
     private string $message;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      * @var \DateTimeInterface
      */
     private \DateTimeInterface $createdAt;

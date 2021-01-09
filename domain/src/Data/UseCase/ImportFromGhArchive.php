@@ -51,6 +51,7 @@ class ImportFromGhArchive
     /**
      * @param ImportFromGhArchiveRequest $request
      * @param ImportFromGhArchivePresenterInterface $presenter
+     * @throws \Assert\AssertionFailedException
      */
     public function execute(ImportFromGhArchiveRequest $request, ImportFromGhArchivePresenterInterface $presenter)
     {

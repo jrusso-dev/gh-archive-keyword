@@ -3,6 +3,8 @@
 
 namespace Yousign\Domain\Data\Request;
 
+use Assert\Assertion;
+
 /**
  * Class GetDataForDateRequest
  * @package Yousign\Domain\Data\Request
@@ -74,5 +76,11 @@ class GetDataForDateRequest
     public function setKeyword(string $keyword): void
     {
         $this->keyword = $keyword;
+    }
+
+    public function validate()
+    {
+        Assertion::notBlank($this->keyword);
+        Assertion::minLength($this->keyword, 4);
     }
 }

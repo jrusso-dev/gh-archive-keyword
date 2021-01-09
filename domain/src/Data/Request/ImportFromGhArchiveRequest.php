@@ -119,6 +119,9 @@ class ImportFromGhArchiveRequest
         $this->date = $date;
     }
 
+    /**
+     * @throws \Assert\AssertionFailedException
+     */
     public function validate()
     {
         Assertion::greaterOrEqualThan($this->year, self::MIN_YEAR);
@@ -126,12 +129,18 @@ class ImportFromGhArchiveRequest
         Assertion::true($this->checkIfDateIsPast());
     }
 
+    /**
+     * @return string
+     */
     private function getDateAsString() : string
     {
         $day = $this->day < 10 ? "0$this->day" : $this->day;
         return "$this->year-$this->month-$day";
     }
 
+    /**
+     * @return bool
+     */
     private function checkIfDateFormatIsValid(): bool
     {
         $dateAsString = $this->getDateAsString();
@@ -139,6 +148,10 @@ class ImportFromGhArchiveRequest
         return $dateObject && $dateObject->format('Y-m-d') === $dateAsString;
     }
 
+    /**
+     * @return bool
+     * @throws \Exception
+     */
     private function checkIfDateIsPast(): bool
     {
         $dateObject = $this->getDate();

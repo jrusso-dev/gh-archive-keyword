@@ -119,6 +119,7 @@ class ImportFromGhArchiveTest extends TestCase
      * @param int $year
      * @param int $month
      * @param int $hour
+     * @throws AssertionFailedException
      */
     public function testFailedRequest(
         int $year,

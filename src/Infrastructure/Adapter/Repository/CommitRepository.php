@@ -128,17 +128,60 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
     /**
      * @param \DateTimeInterface $date
      * @param int $numberOfCommits
-     * @return array
+     * @param string|null $keyword
+     * @return DomainCommit[]
      */
-    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits): array
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits, string $keyword = ''): array
     {
         $numberOfCommits = min($numberOfCommits, 100);
-        return $this->createQueryBuilder('c')
+        $commits = $this->createQueryBuilder('c')
             ->andWhere('c.createdAt = :date')
             ->setParameter('date', $date)
             ->orderBy('c.id', 'DESC')
             ->setMaxResults($numberOfCommits)
             ->getQuery()
             ->getResult();
+
+        $return = [];
+        if(!empty($commits)) {
+            return $this->getDomainCommitsFromCommits($commits);
+        }
+        return $return;
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     * @param string $keyword
+     * @return DomainCommit[]
+     */
+    public function getCommitsForDateAndKeyword(\DateTimeInterface $date, string $keyword): array
+    {
+        $commits = $this->createQueryBuilder('c')
+            ->andWhere('c.createdAt = :date')
+            ->andWhere('c.message LIKE %:message%')
+            ->setParameter('date', $date)
+            ->setParameter('message', $keyword)
+            ->getQuery()
+            ->getResult();
+
+        $return = [];
+        if(!empty($commits)) {
+            return $this->getDomainCommitsFromCommits($commits);
+        }
+        return $return;
+    }
+
+    /**
+     * @param array $commits
+     * @return array
+     */
+    private function getDomainCommitsFromCommits(array $commits) : array
+    {
+        $return = [];
+        foreach($commits as $commit) {
+            /** @var Commit $commit */
+            $return[] = $commit->getDomainEntity();
+        }
+        return $return;
     }
 }
