@@ -3,7 +3,6 @@
 
 namespace App\UserInterface\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * Class HomeController
  * @package App\UserInterface\Controller
  */
-class HomeController extends AbstractController
+class HomeController extends ApiController
 {
 
     /**
@@ -20,8 +19,6 @@ class HomeController extends AbstractController
      */
     public function home(): JsonResponse
     {
-        //Home
-        return $this->json('Welcome to my API');
-
+        return $this->returnSuccess('Welcome to the API');
     }
 }

@@ -44,7 +44,7 @@ class ExceptionListener
         $this->logger->critical($message);
 
         // create json response and set the nice message from exception
-        $customResponse = new JsonResponse(['code'=>$code, 'message' => $message],$code);
+        $customResponse = new JsonResponse(['code'=>$code, 'message' => $message, 'content' => null],$code);
 
         // set it as response and it will be sent
         $event->setResponse($customResponse);
