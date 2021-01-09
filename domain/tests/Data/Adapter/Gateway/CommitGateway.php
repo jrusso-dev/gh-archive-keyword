@@ -59,7 +59,7 @@ class CommitGateway implements CommitGatewayInterface
      * @return Commit[]
      * @throws \Exception
      */
-    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits, string $keyword = 'love'): array
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits = 10, string $keyword = 'love'): array
     {
         if ($date->format('Y-m-d') === '2020-12-01' && $keyword === 'love') {
             return [

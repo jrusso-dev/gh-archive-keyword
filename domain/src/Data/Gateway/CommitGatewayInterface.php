@@ -30,7 +30,7 @@ interface CommitGatewayInterface
      * @param string $keyword
      * @return Commit[]
      */
-    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits, string $keyword = ''): array;
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits = 10, string $keyword = ''): array;
 
     /**
      * @param Commit $commit

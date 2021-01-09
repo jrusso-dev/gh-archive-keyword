@@ -130,17 +130,26 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
      * @param int $numberOfCommits
      * @param string|null $keyword
      * @return DomainCommit[]
+     * @throws \Exception
      */
-    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits, string $keyword = ''): array
+    public function getLastCommitsForDate(\DateTimeInterface $date, int $numberOfCommits = 10, string $keyword = ''): array
     {
+        $from = new \DateTime($date->format("Y-m-d")." 00:00:00");
+        $to   = new \DateTime($date->format("Y-m-d")." 23:59:59");
         $numberOfCommits = min($numberOfCommits, 100);
         $commits = $this->createQueryBuilder('c')
-            ->andWhere('c.createdAt = :date')
+            ->andWhere('c.createdAt BETWEEN :from AND :to')
             ->setParameter('date', $date)
+            ->setParameter('from', $from )
+            ->setParameter('to', $to)
             ->orderBy('c.id', 'DESC')
-            ->setMaxResults($numberOfCommits)
-            ->getQuery()
-            ->getResult();
+            ->setMaxResults($numberOfCommits);
+
+        if(!empty($keyword)) {
+            $commits = $commits->andWhere('c.message LIKE :message')->setParameter('message', "%$keyword%");
+        }
+
+        $commits = $commits->getQuery()->getResult();
 
         $return = [];
         if(!empty($commits)) {
@@ -153,14 +162,20 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
      * @param \DateTimeInterface $date
      * @param string $keyword
      * @return DomainCommit[]
+     * @throws \Exception
      */
     public function getCommitsForDateAndKeyword(\DateTimeInterface $date, string $keyword): array
     {
+        $from = new \DateTime($date->format("Y-m-d")." 00:00:00");
+        $to   = new \DateTime($date->format("Y-m-d")." 23:59:59");
+
         $commits = $this->createQueryBuilder('c')
-            ->andWhere('c.createdAt = :date')
-            ->andWhere('c.message LIKE %:message%')
+            ->andWhere('c.createdAt BETWEEN :from AND :to')
+            ->andWhere('c.message LIKE :message')
             ->setParameter('date', $date)
-            ->setParameter('message', $keyword)
+            ->setParameter('message', "%$keyword%")
+            ->setParameter('from', $from )
+            ->setParameter('to', $to)
             ->getQuery()
             ->getResult();
 
