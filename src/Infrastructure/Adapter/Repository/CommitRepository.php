@@ -139,14 +139,13 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
         $numberOfCommits = min($numberOfCommits, 100);
         $commits = $this->createQueryBuilder('c')
             ->andWhere('c.createdAt BETWEEN :from AND :to')
-            ->setParameter('date', $date)
             ->setParameter('from', $from )
             ->setParameter('to', $to)
             ->orderBy('c.id', 'DESC')
             ->setMaxResults($numberOfCommits);
 
         if(!empty($keyword)) {
-            $commits = $commits->andWhere('c.message LIKE :message')->setParameter('message', "%$keyword%");
+            $commits->andWhere('c.message LIKE :message')->setParameter('message', "%$keyword%");
         }
 
         $commits = $commits->getQuery()->getResult();
@@ -172,7 +171,6 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
         $commits = $this->createQueryBuilder('c')
             ->andWhere('c.createdAt BETWEEN :from AND :to')
             ->andWhere('c.message LIKE :message')
-            ->setParameter('date', $date)
             ->setParameter('message', "%$keyword%")
             ->setParameter('from', $from )
             ->setParameter('to', $to)
