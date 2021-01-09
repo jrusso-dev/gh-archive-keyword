@@ -141,6 +141,7 @@ class ImportFromGhArchiveTest extends TestCase
     {
         yield [0, 0, 0];
         yield [2000, 1, 1];
+        yield [2015, 11, 31];
         yield [2025, 10, 1];
     }
 

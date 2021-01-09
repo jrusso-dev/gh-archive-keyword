@@ -55,6 +55,13 @@ class ImportFromGhArchiveRequest
         $this->setDate(new \DateTime($dateAsString));
     }
 
+    /**
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param bool|null $replaceData
+     * @return ImportFromGhArchiveRequest
+     */
     public static function create(
         int $year,
         int $month,
