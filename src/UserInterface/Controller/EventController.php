@@ -4,7 +4,9 @@
 namespace App\UserInterface\Controller;
 
 use App\UserInterface\Presenter\Data\GetDataForDatePresenter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Assert\AssertionFailedException;
+use Exception;
+use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,9 +17,8 @@ use Yousign\Domain\Data\UseCase\GetDataForDate;
  * Class HomeController
  * @package App\UserInterface\Controller
  */
-class EventController extends AbstractController
+class EventController extends ApiController
 {
-
     /**
      * @Route("/event", name="event_route", methods={"POST"})
      * @param Request $request
@@ -30,15 +31,35 @@ class EventController extends AbstractController
         GetDataForDate $getDataForDate
     ): JsonResponse
     {
-        $date = new \DateTime('2020-10-01');
-        $keyword = "test";
+        $date = $request->get('date');
+        $keyword = $request->get('keyword');
+        if(!$date) {
+            return $this->returnBadRequest('Missing parameter date');
+        }
+        if(!$keyword) {
+            return $this->returnBadRequest('Missing parameter keyword');
+        }
+        $dateForRequest = new \DateTime($date);
 
-        $getDataForDateRequest = GetDataForDateRequest::create($date, $keyword);
+        $getDataForDateRequest = GetDataForDateRequest::create($dateForRequest, $keyword);
         $presenter = new GetDataForDatePresenter();
 
-        $getDataForDate->execute($getDataForDateRequest, $presenter);
+        try {
+            $getDataForDate->execute($getDataForDateRequest, $presenter);
+        }catch (AssertionFailedException $exception) {
+            return $this->returnBadRequest('You must set a valid date and keyword');
+        }catch (Exception $exception) {
+            return $this->returnBadRequest($exception->getMessage());
+        }
 
-        return $this->json('Fetch the response with the ViewModel pattern');
-
+        $response = $presenter->getResponse();
+        //@TODO : Create ViewModel Class (DTO) to return correct template response
+        $responseObj = new stdClass();
+        $responseObj->date = $response->getDate()->format('Y-m-d');
+        $responseObj->keyword = $response->getKeyword();
+        $responseObj->total = $response->getTotal();
+        $responseObj->dataByEventType = $response->getDataByEventType();
+        $responseObj->lastCommits = $response->getLastCommits();
+        return $this->returnSuccess($responseObj);
     }
 }
