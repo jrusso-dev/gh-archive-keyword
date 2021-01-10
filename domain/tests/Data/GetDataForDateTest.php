@@ -66,7 +66,8 @@ class GetDataForDateTest extends TestCase
         $this->assertEquals(1, count($lastCommits));
         $this->assertEquals('Lots of fun and lots of love', $lastCommits[0]->getMessage());
         $this->assertEquals('12345', $lastCommits[0]->getCommitId());
-        $this->assertEquals('12345', $lastCommits[0]->getCommitId());
+        $this->assertEquals('myrepo/myrepo', $lastCommits[0]->getRepositoryName());
+        $this->assertEquals('repoURL', $lastCommits[0]->getRepositoryUrl());
         $this->assertEquals(1, count($dataByEventType));
         $pushEvent = Commit::PUSH_EVT;
         $this->assertEquals(1, $dataByEventType[$pushEvent]->total);
