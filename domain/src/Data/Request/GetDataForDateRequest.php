@@ -89,6 +89,9 @@ class GetDataForDateRequest
         return $dateObject <= $nowDateObject;
     }
 
+    /**
+     * @throws \Assert\AssertionFailedException
+     */
     public function validate()
     {
         Assertion::notBlank($this->keyword);
