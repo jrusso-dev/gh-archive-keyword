@@ -78,9 +78,21 @@ class GetDataForDateRequest
         $this->keyword = $keyword;
     }
 
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    private function checkIfDateIsPast(): bool
+    {
+        $dateObject = $this->getDate();
+        $nowDateObject = new \DateTime();
+        return $dateObject <= $nowDateObject;
+    }
+
     public function validate()
     {
         Assertion::notBlank($this->keyword);
         Assertion::minLength($this->keyword, 4);
+        Assertion::true($this->checkIfDateIsPast());
     }
 }

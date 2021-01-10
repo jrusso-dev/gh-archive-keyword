@@ -22,11 +22,6 @@ class CommitRepository extends ServiceEntityRepository implements CommitGatewayI
         parent::__construct($registry, Commit::class);
     }
 
-    public function findOneByRegistrationCode($registrationCode)
-    {
-        return $this->findOneBy(['registrationCode' => $registrationCode]);
-    }
-
     // /**
     //  * @return Commit[] Returns an array of Commit objects
     //  */

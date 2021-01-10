@@ -21,7 +21,7 @@ class GetDataForDateTest extends IntegrationTestCase
         $date = '2020-12-01';
         $keyword = 'love';
         $client = static::createClient();
-        $client->request(Request::METHOD_POST, self::URL, [
+        $client->request(Request::METHOD_GET, self::URL, [
             'date' => $date,
             'keyword' => $keyword
         ]);
@@ -47,7 +47,7 @@ class GetDataForDateTest extends IntegrationTestCase
         $date = '2020-12-01';
         $keyword = 'nodata';
         $client = static::createClient();
-        $client->request(Request::METHOD_POST, self::URL, [
+        $client->request(Request::METHOD_GET, self::URL, [
             'date' => $date,
             'keyword' => $keyword
         ]);
@@ -58,6 +58,70 @@ class GetDataForDateTest extends IntegrationTestCase
         $this->assertEquals($date, $content->date);
         $this->assertEquals($keyword, $content->keyword);
         $this->assertEquals(0, $content->total);
+    }
+
+    public function testFailWithEmptyDate()
+    {
+        $date = '';
+        $keyword = 'love';
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, self::URL, [
+            'date' => $date,
+            'keyword' => $keyword
+        ]);
+        $responseDecoded = json_decode($client->getResponse()->getContent());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $responseDecoded->code);
+        $this->assertEquals('Missing parameter date', $responseDecoded->message);
+        $this->assertEquals(null, $responseDecoded->content);
+    }
+
+    public function testFailWithEmptyKeyword()
+    {
+        $date = '2020-12-01';
+        $keyword = '';
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, self::URL, [
+            'date' => $date,
+            'keyword' => $keyword
+        ]);
+        $responseDecoded = json_decode($client->getResponse()->getContent());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $responseDecoded->code);
+        $this->assertEquals('Missing parameter keyword', $responseDecoded->message);
+        $this->assertEquals(null, $responseDecoded->content);
+    }
+
+    public function testFailWithShortKeyword()
+    {
+        $date = '2020-12-01';
+        $keyword = 'tes';
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, self::URL, [
+            'date' => $date,
+            'keyword' => $keyword
+        ]);
+        $responseDecoded = json_decode($client->getResponse()->getContent());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $responseDecoded->code);
+        $this->assertEquals('You must set a valid date and keyword', $responseDecoded->message);
+        $this->assertEquals(null, $responseDecoded->content);
+    }
+
+    public function testFailWithFutureDate()
+    {
+        $date = '2025-12-01';
+        $keyword = 'test';
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, self::URL, [
+            'date' => $date,
+            'keyword' => $keyword
+        ]);
+        $responseDecoded = json_decode($client->getResponse()->getContent());
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $responseDecoded->code);
+        $this->assertEquals('You must set a valid date and keyword', $responseDecoded->message);
+        $this->assertEquals(null, $responseDecoded->content);
     }
 
 }

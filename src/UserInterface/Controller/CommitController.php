@@ -17,10 +17,10 @@ use Yousign\Domain\Data\UseCase\GetDataForDate;
  * Class HomeController
  * @package App\UserInterface\Controller
  */
-class EventController extends ApiController
+class CommitController extends ApiController
 {
     /**
-     * @Route("/event", name="event_route", methods={"POST"})
+     * @Route("/commit", name="get_commit_data", methods={"GET"})
      * @param Request $request
      * @param GetDataForDate $getDataForDate
      * @return JsonResponse
