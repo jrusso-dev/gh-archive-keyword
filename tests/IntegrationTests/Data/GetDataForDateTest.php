@@ -14,7 +14,7 @@ use Yousign\Domain\Data\Entity\Commit;
  */
 class GetDataForDateTest extends IntegrationTestCase
 {
-    const URL = '/event';
+    const URL = '/commit';
 
     public function testSuccessful()
     {
